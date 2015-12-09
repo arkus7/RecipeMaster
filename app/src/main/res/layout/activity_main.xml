@@ -39,7 +39,8 @@
         android:layout_marginBottom="@dimen/fb_margin"
         android:layout_marginRight="@dimen/fab_margin"
         android:src="@drawable/fb64"
-        app:backgroundTint="@color/colorFB"/>
+        app:backgroundTint="@color/colorFB"
+        android:visibility="gone"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/getrecipe"
@@ -49,6 +50,9 @@
         android:layout_marginBottom="@dimen/gr_margin"
         android:layout_marginRight="@dimen/fab_margin"
         android:src="@android:drawable/ic_dialog_alert"
-        app:backgroundTint="@color/colorGetRecipe"/>
+        app:backgroundTint="@color/colorGetRecipe"
+        android:visibility="gone"
+        android:clickable="false" />
 
 </android.support.design.widget.CoordinatorLayout>
+
