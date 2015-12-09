@@ -3,4 +3,6 @@
     <color name="colorPrimary">#EF4438</color>
     <color name="colorPrimaryDark">#D32E2E</color>
     <color name="colorAccent">#FEC111</color>
+    <color name="colorFB">#01579B</color>
+    <color name="colorGetRecipe">#F44336</color>
 </resources>
