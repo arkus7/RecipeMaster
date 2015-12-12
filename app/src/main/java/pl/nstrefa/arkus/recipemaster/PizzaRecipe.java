@@ -8,6 +8,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -62,6 +64,18 @@ public class PizzaRecipe extends AppCompatActivity {
                 pre += Integer.toString(i+1) + ". " + preparing.getString(i) + "\n";
             }
             preparingList.setText(pre);
+            for(int i = 0; i < images.length(); i++) {
+                ImageView iv = new ImageView(getApplicationContext());
+                switch (i) {
+                    case 0: iv = (ImageView) findViewById(R.id.pizzaImage1);
+                            break;
+                    case 1: iv = (ImageView) findViewById(R.id.pizzaImage2);
+                        break;
+                    case 2: iv = (ImageView) findViewById(R.id.pizzaImage3);
+                        break;
+                }
+                Picasso.with(getApplicationContext()).load(images.getString(i)).into(iv);
+            }
         }
     }
 
