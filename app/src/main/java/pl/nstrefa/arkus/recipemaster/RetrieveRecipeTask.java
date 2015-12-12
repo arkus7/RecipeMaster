@@ -1,5 +1,6 @@
 package pl.nstrefa.arkus.recipemaster;
 
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -30,7 +31,6 @@ public class RetrieveRecipeTask extends AsyncTask<String, Void, JSONObject> {
         String wholeSite = new String();
         try {
             url = new URL(siteUrl[0]);
-            //url = new URL("localhost");
             is = url.openStream();
             br = new BufferedReader(new InputStreamReader(is));
             while ((line = br.readLine()) != null) {
