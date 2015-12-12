@@ -89,9 +89,9 @@
             android:layout_alignParentStart="true" />
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageView"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/pizzaImage1"
             android:layout_below="@+id/images"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
@@ -99,9 +99,9 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/imageView2"
-            android:layout_below="@+id/imageView"
-            android:layout_toRightOf="@+id/imageView"
-            android:layout_toEndOf="@+id/imageView" />
+            android:id="@+id/pizzaImage2"
+            android:layout_below="@+id/pizzaImage1"
+            android:layout_toRightOf="@+id/pizzaImage1"
+            android:layout_toEndOf="@+id/pizzaImage1" />
     </RelativeLayout>
 </ScrollView>

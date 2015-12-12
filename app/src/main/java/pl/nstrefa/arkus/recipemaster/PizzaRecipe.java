@@ -1,7 +1,10 @@
 package pl.nstrefa.arkus.recipemaster;
 
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,11 +42,14 @@ public class PizzaRecipe extends AppCompatActivity {
             TextView description = (TextView) findViewById(R.id.description);
             TextView ingredientsList = (TextView) findViewById(R.id.ingredientsList);
             TextView preparingList = (TextView) findViewById(R.id.preparingList);
+
             JSONArray ingredients = recipe.getJSONArray("ingredients");
             JSONArray preparing = recipe.getJSONArray("preparing");
-//            JSONArray images = recipe.getJSONArray("images");
+            JSONArray images = recipe.getJSONArray("imgs");
+
             recipeName.setText(recipe.getString("title"));
             description.setText(recipe.getString("description"));
+
             ingredientsList.setText("");
             String ing = new String();
             for(int i = 0; i < ingredients.length(); i++) {
