@@ -5,4 +5,5 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="fb_margin">90dp</dimen>
     <dimen name="gr_margin">164dp</dimen>
+    <dimen name="text_left_margin">16dp</dimen>
 </resources>
