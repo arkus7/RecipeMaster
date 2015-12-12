@@ -15,7 +15,7 @@
     <ImageButton
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:id="@+id/imageButton"
+        android:id="@+id/pizzaImage"
         android:background="@drawable/pizza512trans"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
@@ -30,8 +30,8 @@
         android:layout_centerVertical="true"
         android:textAlignment="center"
         android:textStyle="bold"
-        android:layout_alignLeft="@+id/imageButton"
-        android:layout_alignStart="@+id/imageButton"
-        android:layout_alignRight="@+id/imageButton"
-        android:layout_alignEnd="@+id/imageButton" />
+        android:layout_alignLeft="@+id/pizzaImage"
+        android:layout_alignStart="@+id/pizzaImage"
+        android:layout_alignRight="@+id/pizzaImage"
+        android:layout_alignEnd="@+id/pizzaImage" />
 </RelativeLayout>

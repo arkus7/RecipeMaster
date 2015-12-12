@@ -1,5 +1,6 @@
 package pl.nstrefa.arkus.recipemaster;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
+import android.widget.ImageButton;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,13 +23,13 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        final FloatingActionButton fb = (FloatingActionButton) findViewById(R.id.fb);
+        final FloatingActionButton recipe = (FloatingActionButton) findViewById(R.id.getrecipe);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
-                FloatingActionButton fb = (FloatingActionButton) findViewById(R.id.fb);
-                FloatingActionButton recipe = (FloatingActionButton) findViewById(R.id.getrecipe);
                 switch (fb.getVisibility()) {
                     case View.VISIBLE :
                         fb.setVisibility(View.GONE);
@@ -38,6 +40,14 @@ public class MainActivity extends AppCompatActivity {
                         recipe.setVisibility(View.VISIBLE);
                         break;
                 }
+            }
+        });
+        ImageButton pizzaImage = (ImageButton) findViewById(R.id.pizzaImage);
+        pizzaImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(v.getContext(), PizzaRecipe.class);
+                startActivity(i);
             }
         });
     }
