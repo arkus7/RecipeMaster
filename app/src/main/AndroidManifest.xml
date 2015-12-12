@@ -20,7 +20,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PizzaRecipe"></activity>
+        <activity
+            android:name=".PizzaRecipe"
+            android:label="Pizza Recipe!"
+            android:allowEmbedded="true"
+            android:parentActivityName=".MainActivity">
+
+        </activity>
     </application>
 
 </manifest>
