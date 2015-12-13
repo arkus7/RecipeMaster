@@ -2,8 +2,11 @@ package pl.nstrefa.arkus.recipemaster;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewStub;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +28,7 @@ public class PizzaRecipe extends AppCompatActivity {
 
     protected JSONObject recipe;
     protected String userName;
+    protected Uri userPicture;
     protected CallbackManager callbackManager;
 
     @Override
@@ -34,6 +38,20 @@ public class PizzaRecipe extends AppCompatActivity {
         setContentView(R.layout.activity_pizza_recipe);
         Intent i = getIntent();
         userName = i.getStringExtra("username");
+        userPicture = (Uri) i.getExtras().get("userpicture");
+        if(userName != null) {
+            ViewStub stub = (ViewStub) findViewById(R.id.layout_stub);
+            stub.setLayoutResource(R.layout.fb_bar);
+            View inflated = stub.inflate();
+            TextView user = (TextView) findViewById(R.id.userName);
+            String logged = "Logged as " + userName;
+            user.setText(logged);
+        } else {
+            //TODO: remove space
+        }
+        if(userPicture != null) {
+            Picasso.with(getApplicationContext()).load(userPicture).into((ImageView) findViewById(R.id.userPicture));
+        }
         try {
             recipe = new RetrieveRecipeTask().execute("http://mooduplabs.com/test/info.php").get();
             fillActivity(recipe);

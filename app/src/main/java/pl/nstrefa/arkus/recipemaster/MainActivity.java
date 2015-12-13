@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -31,6 +33,7 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 
 import java.lang.reflect.Array;
+import java.net.URI;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -39,6 +42,7 @@ import java.util.Arrays;
 public class MainActivity extends AppCompatActivity {
 
     protected String userName;
+    protected Uri userPicture;
     protected CallbackManager callbackManager;
 
     @Override
@@ -68,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.v("facebook - profile", profile.getFirstName());
                 }
                 userName = Profile.getCurrentProfile().getName();
+                userPicture = Profile.getCurrentProfile().getProfilePictureUri(50,50);
                 Toast.makeText(getApplicationContext(), "Zalogowano jako " + userName,Toast.LENGTH_LONG).show();
             }
 
@@ -102,7 +107,6 @@ public class MainActivity extends AppCompatActivity {
                     case View.VISIBLE :
                         fb.setVisibility(View.GONE);
                         recipe.setVisibility(View.GONE);
-                        LoginManager.getInstance().logOut();
                         break;
                     case View.GONE:
                         fb.setVisibility(View.VISIBLE);
@@ -118,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(v.getContext(), PizzaRecipe.class);
                 i.putExtra("username", userName);
+                i.putExtra("userpicture", userPicture);
                 startActivity(i);
             }
         });
@@ -126,7 +131,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
         // Logs 'install' and 'app activate' App Events.
         AppEventsLogger.activateApp(this);
     }
@@ -152,5 +156,28 @@ public class MainActivity extends AppCompatActivity {
         if (callbackManager.onActivityResult(requestCode, resultCode, data)) {
             return;
         }
+
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        if(userName != null && userPicture != null) {
+            savedInstanceState.putString("username", userName);
+            savedInstanceState.putString("userpicture", userPicture.toString());
+        }
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (savedInstanceState != null) {
+            // Restore value of members from saved state
+            userName = savedInstanceState.getString("username");
+            userPicture = Uri.parse(savedInstanceState.getString("userpicture"));
+        } else {
+            // Probably initialize members with default values for a new instance
+        }
+
     }
 }
