@@ -3,6 +3,7 @@ package pl.nstrefa.arkus.recipemaster;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.support.v4.widget.Space;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -29,16 +30,20 @@ public class PizzaRecipe extends AppCompatActivity {
     protected JSONObject recipe;
     protected String userName;
     protected Uri userPicture;
-    protected CallbackManager callbackManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //callbackManager = CallbackManager.Factory.create();
         setContentView(R.layout.activity_pizza_recipe);
         Intent i = getIntent();
         userName = i.getStringExtra("username");
         userPicture = (Uri) i.getExtras().get("userpicture");
+        try {
+            recipe =  new JSONObject(i.getStringExtra("recipeJSON"));
+            fillActivity(recipe);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         if(userName != null) {
             ViewStub stub = (ViewStub) findViewById(R.id.layout_stub);
             stub.setLayoutResource(R.layout.fb_bar);
@@ -47,29 +52,21 @@ public class PizzaRecipe extends AppCompatActivity {
             String logged = "Logged as " + userName;
             user.setText(logged);
         } else {
+            Space space = (Space) findViewById(R.id.space);
+            space.setVisibility(View.GONE);
             //TODO: remove space
         }
         if(userPicture != null) {
             Picasso.with(getApplicationContext()).load(userPicture).into((ImageView) findViewById(R.id.userPicture));
         }
-        try {
-            recipe = new RetrieveRecipeTask().execute("http://mooduplabs.com/test/info.php").get();
-            fillActivity(recipe);
-        } catch (InterruptedException ie) {
-            Toast.makeText(getApplicationContext(),"Interrupted", Toast.LENGTH_LONG).show();
-        } catch (ExecutionException ee) {
-            Toast.makeText(getApplicationContext(),"Failed to execute", Toast.LENGTH_LONG).show();
-        } catch (JSONException jsone) {
-            Toast.makeText(getApplicationContext(),"Failed reading JSON object", Toast.LENGTH_LONG).show();
-        }
-        Toast.makeText(getApplicationContext(), userName, Toast.LENGTH_LONG).show();
+        setResult(RESULT_FIRST_USER, i);
+        //Toast.makeText(getApplicationContext(), userName, Toast.LENGTH_LONG).show();
 
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     protected void fillActivity(JSONObject recipe) throws JSONException {
@@ -113,4 +110,9 @@ public class PizzaRecipe extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        finish();
+        super.onDestroy();
+    }
 }
