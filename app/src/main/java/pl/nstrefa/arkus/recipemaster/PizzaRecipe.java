@@ -8,6 +8,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookActivity;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -20,11 +24,16 @@ import java.util.concurrent.ExecutionException;
 public class PizzaRecipe extends AppCompatActivity {
 
     protected JSONObject recipe;
+    protected String userName;
+    protected CallbackManager callbackManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //callbackManager = CallbackManager.Factory.create();
         setContentView(R.layout.activity_pizza_recipe);
+        Intent i = getIntent();
+        userName = i.getStringExtra("username");
         try {
             recipe = new RetrieveRecipeTask().execute("http://mooduplabs.com/test/info.php").get();
             fillActivity(recipe);
@@ -35,7 +44,14 @@ public class PizzaRecipe extends AppCompatActivity {
         } catch (JSONException jsone) {
             Toast.makeText(getApplicationContext(),"Failed reading JSON object", Toast.LENGTH_LONG).show();
         }
+        Toast.makeText(getApplicationContext(), userName, Toast.LENGTH_LONG).show();
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     protected void fillActivity(JSONObject recipe) throws JSONException {
