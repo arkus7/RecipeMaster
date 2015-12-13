@@ -1,5 +1,6 @@
 package pl.nstrefa.arkus.recipemaster;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -14,11 +15,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.PopupMenu;
+import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.facebook.CallbackManager;
@@ -32,11 +39,15 @@ import com.facebook.login.LoginBehavior;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.lang.reflect.Array;
 import java.net.URI;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.concurrent.ExecutionException;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -44,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     protected String userName;
     protected Uri userPicture;
     protected CallbackManager callbackManager;
+    static final int RETURN_FROM_PIZZA_RECIPE = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,8 +84,9 @@ public class MainActivity extends AppCompatActivity {
                     Log.v("facebook - profile", profile.getFirstName());
                 }
                 userName = Profile.getCurrentProfile().getName();
-                userPicture = Profile.getCurrentProfile().getProfilePictureUri(50,50);
-                Toast.makeText(getApplicationContext(), "Zalogowano jako " + userName,Toast.LENGTH_LONG).show();
+                userPicture = Profile.getCurrentProfile().getProfilePictureUri(50, 50);
+                Snackbar.make(findViewById(R.id.activity_main), "Zalogowano jako " + userName,Snackbar.LENGTH_LONG).setAction("Action",null).show();
+                //Toast.makeText(getApplicationContext(), "Zalogowano jako " + userName, Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -88,6 +101,11 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Błąd logowania", Toast.LENGTH_LONG).show();
             }
         });
+
+        if(Profile.getCurrentProfile() != null) {
+            userName = Profile.getCurrentProfile().getName();
+            userPicture = Profile.getCurrentProfile().getProfilePictureUri(50,50);
+        }
 
         //fb
         setContentView(R.layout.activity_main);
@@ -111,19 +129,59 @@ public class MainActivity extends AppCompatActivity {
                     case View.GONE:
                         fb.setVisibility(View.VISIBLE);
                         recipe.setVisibility(View.VISIBLE);
-                        facebookLogin();
                         break;
                 }
             }
         });
         ImageButton pizzaImage = (ImageButton) findViewById(R.id.pizzaImage);
+
+        fb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(Profile.getCurrentProfile() == null)
+                    facebookLogin();
+                else {
+                    logOutPopup();
+                }
+            }
+        });
+
+        recipe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startPizzaRecipeActivity(v);
+            }
+        });
+
         pizzaImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(v.getContext(), PizzaRecipe.class);
-                i.putExtra("username", userName);
-                i.putExtra("userpicture", userPicture);
-                startActivity(i);
+                startPizzaRecipeActivity(v);
+            }
+        });
+    }
+
+    private void logOutPopup() {
+        LayoutInflater inflater = (LayoutInflater) MainActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View layout = inflater.inflate(R.layout.popup, (ViewGroup) findViewById(R.id.popup));
+        final PopupWindow popupWindow = new PopupWindow(layout,1100,400,true);
+        popupWindow.setAnimationStyle(-1);
+        popupWindow.showAtLocation(layout, Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+        Button yes = (Button) layout.findViewById(R.id.logOutYesButton);
+        Button cancel = (Button) layout.findViewById(R.id.logOutCancelButton);
+        yes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LoginManager.getInstance().logOut();
+                userName = null;
+                userPicture = null;
+                popupWindow.dismiss();
+            }
+        });
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
             }
         });
     }
@@ -146,8 +204,8 @@ public class MainActivity extends AppCompatActivity {
     protected void facebookLogin() {
         LoginManager lm = LoginManager.getInstance();
         lm.setLoginBehavior(LoginBehavior.NATIVE_WITH_FALLBACK);
-        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "user_friends"));
-        Toast.makeText(getApplicationContext(), "facebookLogin()", Toast.LENGTH_LONG).show();
+        LoginManager.getInstance().logInWithReadPermissions(this, null);
+        //Toast.makeText(getApplicationContext(), "facebookLogin()", Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -155,6 +213,12 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (callbackManager.onActivityResult(requestCode, resultCode, data)) {
             return;
+        }
+        if(requestCode == RETURN_FROM_PIZZA_RECIPE) {
+            if(resultCode == RESULT_FIRST_USER) {
+                userName = data.getStringExtra("username");
+                userPicture = (Uri) data.getExtras().get("userpicture");
+            }
         }
 
     }
@@ -179,5 +243,28 @@ public class MainActivity extends AppCompatActivity {
             // Probably initialize members with default values for a new instance
         }
 
+    }
+
+    protected void startPizzaRecipeActivity(View v) {
+        Intent i = new Intent(v.getContext(), PizzaRecipe.class);
+        i.putExtra("username", userName);
+        i.putExtra("userpicture", userPicture);
+        try {
+            JSONObject recipeJSON = new RetrieveRecipeTask().execute("http://mooduplabs.com/test/info.php").get();
+            if(recipeJSON.getString("title") == null) {
+                throw new JSONException("No JSONObject downloaded");
+            }
+            i.putExtra("recipeJSON", recipeJSON.toString());
+            i.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION|Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            startActivityForResult(i, RETURN_FROM_PIZZA_RECIPE);
+        } catch (InterruptedException ie) {
+            Toast.makeText(getApplicationContext(),"Interrupted", Toast.LENGTH_LONG).show();
+        } catch (ExecutionException ee) {
+            Toast.makeText(getApplicationContext(),"Failed to execute", Toast.LENGTH_LONG).show();
+        }
+        catch (JSONException jsone) {
+            Toast.makeText(getApplicationContext(),"Can't download recipe. Is your connection active?", Toast.LENGTH_LONG).show();
+            //TODO: if error, don't open this activity.
+        }
     }
 }
