@@ -115,6 +115,7 @@
             android:layout_toEndOf="@+id/pizzaImage2" />
         
         <android.support.v4.widget.Space
+            android:id="@+id/space"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_below="@+id/pizzaImage1"
