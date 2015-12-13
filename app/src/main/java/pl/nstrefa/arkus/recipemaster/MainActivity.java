@@ -85,7 +85,8 @@ public class MainActivity extends AppCompatActivity {
                 }
                 userName = Profile.getCurrentProfile().getName();
                 userPicture = Profile.getCurrentProfile().getProfilePictureUri(50, 50);
-                Snackbar.make(findViewById(R.id.activity_main), "Zalogowano jako " + userName,Snackbar.LENGTH_LONG).setAction("Action",null).show();
+                //Snackbar.make(findViewById(R.id.activity_main), "Zalogowano jako " + userName,Snackbar.LENGTH_LONG).setAction("Action",null).show();
+                showLoggedAs();
                 //Toast.makeText(getApplicationContext(), "Zalogowano jako " + userName, Toast.LENGTH_LONG).show();
             }
 
@@ -102,16 +103,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        if(Profile.getCurrentProfile() != null) {
-            userName = Profile.getCurrentProfile().getName();
-            userPicture = Profile.getCurrentProfile().getProfilePictureUri(50,50);
-        }
-
         //fb
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         // Logs 'install' and 'app activate' App Events.
         setSupportActionBar(toolbar);
+
+        //fb logged as
+
+        if(Profile.getCurrentProfile() != null) {
+            userName = Profile.getCurrentProfile().getName();
+            userPicture = Profile.getCurrentProfile().getProfilePictureUri(50, 50);
+        }
+
+        //fb logged as
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         final FloatingActionButton fb = (FloatingActionButton) findViewById(R.id.fb);
@@ -159,6 +164,17 @@ public class MainActivity extends AppCompatActivity {
                 startPizzaRecipeActivity(v);
             }
         });
+    }
+
+    private void showLoggedAs() {
+        View v = findViewById(R.id.activity_main);
+        Snackbar.make(v, "Zalogowano jako " + userName,Snackbar.LENGTH_LONG).setAction("Wyloguj", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LoginManager.getInstance().logOut();
+                Snackbar.make(v, "Wylogowano...", Snackbar.LENGTH_LONG).show();
+            }
+        }).show();
     }
 
     private void logOutPopup() {
