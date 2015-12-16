@@ -110,9 +110,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/pizzaImage3"
-            android:layout_alignTop="@+id/pizzaImage1"
+            android:layout_alignTop="@+id/pizzaImage2"
             android:layout_toRightOf="@+id/pizzaImage2"
-            android:layout_toEndOf="@+id/pizzaImage2"
-            android:layout_margin="@dimen/image_margin"/>
+            android:layout_toEndOf="@+id/pizzaImage2" />
+        
+        <android.support.v4.widget.Space
+            android:id="@+id/space"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_below="@+id/pizzaImage1"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
     </RelativeLayout>
 </ScrollView>
