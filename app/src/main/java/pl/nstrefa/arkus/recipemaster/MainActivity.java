@@ -28,6 +28,8 @@ import android.widget.PopupMenu;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -55,6 +57,9 @@ public class MainActivity extends AppCompatActivity {
     protected String userName;
     protected Uri userPicture;
     protected CallbackManager callbackManager;
+    private ProfileTracker profileTracker;
+    private AccessTokenTracker accessTokenTracker;
+    private AccessToken accessToken;
     static final int RETURN_FROM_PIZZA_RECIPE = 0;
 
     @Override
@@ -64,29 +69,45 @@ public class MainActivity extends AppCompatActivity {
         FacebookSdk.sdkInitialize(getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
 
+        accessTokenTracker = new AccessTokenTracker() {
+            @Override
+            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
+                if(currentAccessToken != null) {
+                    Log.v("facebook - token", currentAccessToken.toString());
+                }
+                accessToken = currentAccessToken;
+            }
+        };
+        accessToken = AccessToken.getCurrentAccessToken();
+
         LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
 
-            private ProfileTracker profileTracker;
 
             @Override
             public void onSuccess(LoginResult loginResult) {
+                Log.v("facebook - token", AccessToken.getCurrentAccessToken().getToken());
                 if (Profile.getCurrentProfile() == null) {
                     profileTracker = new ProfileTracker() {
                         @Override
                         protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
                             Log.v("facebook - profile", currentProfile.getFirstName());
+                            userName = currentProfile.getName();
+                            userPicture = currentProfile.getProfilePictureUri(100, 100);
+                            showLoggedAs();
                             profileTracker.stopTracking();
                         }
                     };
                     profileTracker.startTracking();
-                } else {
+                } else if(AccessToken.getCurrentAccessToken() != null) {
                     Profile profile = Profile.getCurrentProfile();
+                    userName = Profile.getCurrentProfile().getName();
+                    userPicture = Profile.getCurrentProfile().getProfilePictureUri(100, 100);
                     Log.v("facebook - profile", profile.getFirstName());
                 }
-                userName = Profile.getCurrentProfile().getName();
-                userPicture = Profile.getCurrentProfile().getProfilePictureUri(50, 50);
+//                userName = Profile.getCurrentProfile().getName();
+//                userPicture = Profile.getCurrentProfile().getProfilePictureUri(50, 50);
+                if(userName != null) { showLoggedAs(); }
                 //Snackbar.make(findViewById(R.id.activity_main), "Zalogowano jako " + userName,Snackbar.LENGTH_LONG).setAction("Action",null).show();
-                showLoggedAs();
                 //Toast.makeText(getApplicationContext(), "Zalogowano jako " + userName, Toast.LENGTH_LONG).show();
             }
 
@@ -143,9 +164,9 @@ public class MainActivity extends AppCompatActivity {
         fb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(Profile.getCurrentProfile() == null)
+                if(AccessToken.getCurrentAccessToken() == null) {
                     facebookLogin();
-                else {
+                } else {
                     logOutPopup();
                 }
             }
@@ -282,5 +303,12 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),"Can't download recipe. Is your connection active?", Toast.LENGTH_LONG).show();
             //TODO: if error, don't open this activity.
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+//        accessTokenTracker.stopTracking();
+//        profileTracker.stopTracking();
     }
 }
