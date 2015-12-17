@@ -1,11 +1,15 @@
 package pl.nstrefa.arkus.recipemaster;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.ColorRes;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.graphics.ColorUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -15,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.Toast;
@@ -141,15 +146,15 @@ public class MainActivity extends AppCompatActivity {
         FloatingActionButton recipe = (FloatingActionButton) findViewById(R.id.getRecipe);
 
         actionButton.setOnFloatingActionsMenuUpdateListener(new FloatingActionsMenu.OnFloatingActionsMenuUpdateListener() {
-
+            FrameLayout fl = (FrameLayout) findViewById(R.id.activity_main_content);
             @Override
             public void onMenuExpanded() {
-
+                fl.setAlpha(0.4f);
             }
 
             @Override
             public void onMenuCollapsed() {
-
+                fl.setAlpha(1.0f);
             }
         });
 
