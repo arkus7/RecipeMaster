@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -24,36 +25,37 @@
 
     <include layout="@layout/content_main" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/actionMenu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_dialog_email" />
+        fab:fab_addButtonColorNormal="@color/colorAccent"
+        fab:fab_addButtonColorPressed="@color/white_pressed"
+        fab:fab_addButtonPlusIconColor="@color/white"
+        fab:fab_labelStyle="@style/menu_labels_style"
+        android:layout_gravity="bottom|end">
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fb"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:layout_marginBottom="@dimen/fb_margin"
-        android:layout_marginRight="@dimen/fab_margin"
-        android:src="@drawable/fb64"
-        app:backgroundTint="@color/colorFB"
-        android:visibility="gone"/>
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/getRecipe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@color/colorGetRecipe"
+            fab:fab_title="Get the recipe"
+            fab:fab_colorPressed="@color/white_pressed"
+            fab:fab_icon="@drawable/pizza"
+            fab:fab_size="mini"/>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/getrecipe"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:layout_marginBottom="@dimen/gr_margin"
-        android:layout_marginRight="@dimen/fab_margin"
-        android:src="@android:drawable/ic_dialog_alert"
-        app:backgroundTint="@color/colorGetRecipe"
-        android:visibility="gone"
-        android:clickable="false" />
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/facebook"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@color/colorFB"
+            fab:fab_title="Zaloguj przez Facebooka"
+            fab:fab_colorPressed="@color/white_pressed"
+            fab:fab_icon="@drawable/facebook"
+            fab:fab_size="mini"/>
+
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
 </android.support.design.widget.CoordinatorLayout>
 
