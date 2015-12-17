@@ -2,12 +2,13 @@
 <resources>
     <color name="colorPrimary">#EF4438</color>
     <color name="colorPrimaryDark">#D32E2E</color>
-    <color name="colorAccent">#FEC111</color>
-    <color name="colorFB">#01579B</color>
-    <color name="colorGetRecipe">#F44336</color>
-    <color name="colorFbBar">#E1E1E1</color>
+    <color name="colorPrimaryAlpha">#66d32e2e</color>
+    <color name="menu">#FEC111</color>
+    <color name="menu_pressed">#ffa900</color>
+    <color name="facebook">#01579B</color>
+    <color name="recipe">#F44336</color>
+    <color name="facebook_bar">#E1E1E1</color>
     <color name="half_black">#808080</color>
     <color name="white">#fafafa</color>
-    <color name="white_pressed">#f1f1f1</color>
     <color name="black_semi_transparent">#B2000000</color>
 </resources>
