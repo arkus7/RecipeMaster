@@ -3,6 +3,7 @@ package pl.nstrefa.arkus.recipemaster;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.support.v4.app.NavUtils;
 import android.support.v4.widget.Space;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -114,5 +115,14 @@ public class PizzaRecipe extends AppCompatActivity {
     protected void onDestroy() {
         finish();
         super.onDestroy();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(android.view.MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            NavUtils.navigateUpTo(this, getIntent());
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
