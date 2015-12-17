@@ -21,36 +21,33 @@ import java.net.URL;
 public class RetrieveRecipeTask extends AsyncTask<String, Void, JSONObject> {
 
     private Exception exception;
-    protected JSONObject recipe;
 
     protected JSONObject doInBackground(String... siteUrl) {
         URL url;
         InputStream is = null;
         BufferedReader br;
         String line;
-        String wholeSite = new String();
+        String json = new String();
         try {
             url = new URL(siteUrl[0]);
             is = url.openStream();
             br = new BufferedReader(new InputStreamReader(is));
             while ((line = br.readLine()) != null) {
-                wholeSite += line;
+                json += line;
             }
-            Log.d("getRecipe", wholeSite);
         } catch (MalformedURLException mue) {
 
         } catch (IOException ioe) {
 
         }
         try {
-            return new JSONObject(wholeSite);
+            return new JSONObject(json);
         } catch(JSONException je) {
             return new JSONObject();
         }
     }
 
     protected void onPostExecute(JSONObject object) {
-        // TODO: check this.exception
-        // TODO: do something with the recipe
+        
     }
 }

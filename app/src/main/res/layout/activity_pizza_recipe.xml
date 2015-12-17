@@ -5,17 +5,24 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        tools:context="pl.nstrefa.arkus.recipemaster.PizzaRecipe"
-        tools:showIn="@layout/content_pizza_recipe">
+        android:id="@+id/activityPizzaRecipe"
+        tools:context="pl.nstrefa.arkus.recipemaster.PizzaRecipe">
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:theme="@style/AppTheme.AppBarOverlay">
-
         </android.support.design.widget.AppBarLayout>
 
         <include layout="@layout/content_pizza_recipe" />
+
+
+
+    <ViewStub
+        android:id="@+id/layout_stub"
+        android:inflatedId="@layout/fb_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     </android.support.design.widget.CoordinatorLayout>
 

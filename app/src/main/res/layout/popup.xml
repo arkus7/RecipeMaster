@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:id="@+id/popup">
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/imageView"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:background="@color/colorFbBar"
+        android:alpha="0.8"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Wylogować z Facebook?"
+        android:id="@+id/logOutPopupMessage"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:padding="5dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tak"
+        android:id="@+id/logOutYesButton"
+        android:layout_below="@+id/logOutPopupMessage"
+        android:layout_alignLeft="@+id/logOutPopupMessage"
+        android:layout_alignStart="@+id/logOutPopupMessage" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nie"
+        android:id="@+id/logOutCancelButton"
+        android:layout_below="@+id/logOutPopupMessage"
+        android:layout_alignRight="@+id/logOutPopupMessage"
+        android:layout_alignEnd="@+id/logOutPopupMessage" />
+
+</RelativeLayout>
