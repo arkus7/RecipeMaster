@@ -2,29 +2,19 @@ package pl.nstrefa.arkus.recipemaster;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.PopupMenu;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
@@ -44,11 +34,6 @@ import com.facebook.login.LoginResult;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
-import java.net.URI;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 
 
@@ -61,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private AccessTokenTracker accessTokenTracker;
     private AccessToken accessToken;
     static final int RETURN_FROM_PIZZA_RECIPE = 0;
+    private int alreadyRunning = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,6 +123,14 @@ public class MainActivity extends AppCompatActivity {
             userPicture = Profile.getCurrentProfile().getProfilePictureUri(50, 50);
         }
 
+        try {
+            Intent i = getIntent();
+            alreadyRunning =  i.getIntExtra("alreadyrunning", -1);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        if(alreadyRunning == -1 && accessToken != null) { showLoggedAs(); alreadyRunning = 0;}
+
         //fb logged as
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -189,13 +183,20 @@ public class MainActivity extends AppCompatActivity {
 
     private void showLoggedAs() {
         View v = findViewById(R.id.activity_main);
-        Snackbar.make(v, "Zalogowano jako " + userName,Snackbar.LENGTH_LONG).setAction("Wyloguj", new View.OnClickListener() {
+        Snackbar.make(v, "Jesteś zalogowany jako " + userName,Snackbar.LENGTH_LONG).setAction("Wyloguj", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LoginManager.getInstance().logOut();
+                facebookLogOut();
                 Snackbar.make(v, "Wylogowano...", Snackbar.LENGTH_LONG).show();
             }
         }).show();
+    }
+
+    private void facebookLogOut() {
+        LoginManager.getInstance().logOut();
+        userName = null;
+        userPicture = null;
+        accessToken = null;
     }
 
     private void logOutPopup() {
@@ -209,9 +210,7 @@ public class MainActivity extends AppCompatActivity {
         yes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LoginManager.getInstance().logOut();
-                userName = null;
-                userPicture = null;
+                facebookLogOut();
                 popupWindow.dismiss();
             }
         });
@@ -255,6 +254,7 @@ public class MainActivity extends AppCompatActivity {
             if(resultCode == RESULT_FIRST_USER) {
                 userName = data.getStringExtra("username");
                 userPicture = (Uri) data.getExtras().get("userpicture");
+                alreadyRunning = data.getIntExtra("alreadyrunning", 0);
             }
         }
 
@@ -266,6 +266,7 @@ public class MainActivity extends AppCompatActivity {
         if(userName != null && userPicture != null) {
             savedInstanceState.putString("username", userName);
             savedInstanceState.putString("userpicture", userPicture.toString());
+            savedInstanceState.putInt("alreadyrunning", alreadyRunning);
         }
     }
 
@@ -276,6 +277,7 @@ public class MainActivity extends AppCompatActivity {
             // Restore value of members from saved state
             userName = savedInstanceState.getString("username");
             userPicture = Uri.parse(savedInstanceState.getString("userpicture"));
+            alreadyRunning = savedInstanceState.getInt("alreadyrunning");
         } else {
             // Probably initialize members with default values for a new instance
         }
@@ -286,6 +288,7 @@ public class MainActivity extends AppCompatActivity {
         Intent i = new Intent(v.getContext(), PizzaRecipe.class);
         i.putExtra("username", userName);
         i.putExtra("userpicture", userPicture);
+        i.putExtra("alreadyrunning", alreadyRunning);
         try {
             JSONObject recipeJSON = new RetrieveRecipeTask().execute("http://mooduplabs.com/test/info.php").get();
             if(recipeJSON.getString("title") == null) {
