@@ -141,16 +141,22 @@ public class MainActivity extends AppCompatActivity {
 
         //fb logged as
         window = getWindow();
-        FloatingActionsMenu actionButton = (FloatingActionsMenu) findViewById(R.id.actionMenu);
+        final FloatingActionsMenu actionButton = (FloatingActionsMenu) findViewById(R.id.actionMenu);
         FloatingActionButton fb = (FloatingActionButton) findViewById(R.id.facebook);
         FloatingActionButton recipe = (FloatingActionButton) findViewById(R.id.getRecipe);
 
         actionButton.setOnFloatingActionsMenuUpdateListener(new FloatingActionsMenu.OnFloatingActionsMenuUpdateListener() {
             FrameLayout fl = (FrameLayout) findViewById(R.id.activity_main_content);
-            @Override @TargetApi(21)
+            @Override
             public void onMenuExpanded() {
                 fl.setAlpha(0.2f);
                 setStatusBarColor(R.color.colorPrimaryAlpha);
+                fl.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        actionButton.collapse();
+                    }
+                });
             }
 
             @Override
@@ -183,7 +189,11 @@ public class MainActivity extends AppCompatActivity {
         pizzaImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startPizzaRecipeActivity(v);
+                if(!actionButton.isExpanded()) {
+                    startPizzaRecipeActivity(v);
+                } else {
+                    actionButton.collapse();
+                }
             }
         });
     }
@@ -259,6 +269,8 @@ public class MainActivity extends AppCompatActivity {
         }
         if(requestCode == RETURN_FROM_PIZZA_RECIPE) {
             if(resultCode == RESULT_FIRST_USER) {
+                FloatingActionsMenu menu = (FloatingActionsMenu) findViewById(R.id.actionMenu);
+                menu.collapseImmediately();
                 userName = data.getStringExtra("username");
                 userPicture = (Uri) data.getExtras().get("userpicture");
                 alreadyRunning = data.getIntExtra("alreadyrunning", 0);

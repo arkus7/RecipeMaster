@@ -7,7 +7,8 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context="pl.nstrefa.arkus.recipemaster.MainActivity"
-    android:id="@+id/activity_main">
+    android:id="@+id/activity_main"
+    android:descendantFocusability="blocksDescendants" >
 
     <FrameLayout
         android:layout_width="match_parent"
