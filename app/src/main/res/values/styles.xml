@@ -5,7 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/menu</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -20,6 +20,11 @@
 
     <style name="AppTheme.Recipe" parent="Theme.AppCompat.Light.DarkActionBar">
 
+    </style>
+
+    <style name="menu_labels_style">
+        <item name="android:background">@drawable/fab_label_background</item>
+        <item name="android:textColor">@color/half_black</item>
     </style>
 
 

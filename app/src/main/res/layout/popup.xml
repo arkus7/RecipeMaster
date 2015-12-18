@@ -9,7 +9,7 @@
         android:id="@+id/imageView"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:background="@color/colorFbBar"
+        android:background="@color/facebook_bar"
         android:alpha="0.8"/>
 
     <TextView
