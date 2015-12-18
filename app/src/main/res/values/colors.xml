@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#EF4438</color>
     <color name="colorPrimaryDark">#D32E2E</color>
-    <color name="colorPrimaryAlpha">#66d32e2e</color>
+    <color name="colorPrimaryAlpha">#fcd3d4</color>
     <color name="menu">#FEC111</color>
     <color name="menu_pressed">#ffa900</color>
     <color name="facebook">#01579B</color>

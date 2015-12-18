@@ -5,19 +5,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.ColorRes;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
-import android.support.v4.graphics.ColorUtils;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.ContextMenu;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -44,7 +44,6 @@ import org.json.JSONObject;
 
 import java.util.concurrent.ExecutionException;
 
-
 public class MainActivity extends AppCompatActivity {
 
     protected String userName;
@@ -55,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
     private AccessToken accessToken;
     static final int RETURN_FROM_PIZZA_RECIPE = 0;
     private int alreadyRunning = -1;
+    private Window window;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,21 +140,23 @@ public class MainActivity extends AppCompatActivity {
         if(alreadyRunning == -1 && accessToken != null) { showLoggedAs(); alreadyRunning = 0;}
 
         //fb logged as
-
+        window = getWindow();
         FloatingActionsMenu actionButton = (FloatingActionsMenu) findViewById(R.id.actionMenu);
         FloatingActionButton fb = (FloatingActionButton) findViewById(R.id.facebook);
         FloatingActionButton recipe = (FloatingActionButton) findViewById(R.id.getRecipe);
 
         actionButton.setOnFloatingActionsMenuUpdateListener(new FloatingActionsMenu.OnFloatingActionsMenuUpdateListener() {
             FrameLayout fl = (FrameLayout) findViewById(R.id.activity_main_content);
-            @Override
+            @Override @TargetApi(21)
             public void onMenuExpanded() {
-                fl.setAlpha(0.4f);
+                fl.setAlpha(0.2f);
+                setStatusBarColor(R.color.colorPrimaryAlpha);
             }
 
             @Override
             public void onMenuCollapsed() {
                 fl.setAlpha(1.0f);
+                setStatusBarColor(R.color.colorPrimaryDark);
             }
         });
 
@@ -318,5 +320,15 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
 //        accessTokenTracker.stopTracking();
 //        profileTracker.stopTracking();
+    }
+
+    private void setStatusBarColor(int colorResID) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            int intColor = ContextCompat.getColor(getApplicationContext(), colorResID);
+            String hexColor = String.format("#%06X", (0xFFFFFF & intColor));
+            window.setStatusBarColor(Color.parseColor(hexColor));
+        }
     }
 }
