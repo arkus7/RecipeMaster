@@ -1,10 +1,7 @@
 package pl.nstrefa.arkus.recipemaster;
 
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.util.Log;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -15,12 +12,7 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-/**
- * Created by arkus on 12/12/15.
- */
-public class RetrieveRecipeTask extends AsyncTask<String, Void, JSONObject> {
-
-    private Exception exception;
+class RetrieveRecipeTask extends AsyncTask<String, Void, JSONObject> {
 
     protected JSONObject doInBackground(String... siteUrl) {
         URL url;
@@ -36,9 +28,9 @@ public class RetrieveRecipeTask extends AsyncTask<String, Void, JSONObject> {
                 json += line;
             }
         } catch (MalformedURLException mue) {
-
+            mue.printStackTrace();
         } catch (IOException ioe) {
-
+            ioe.printStackTrace();
         }
         try {
             return new JSONObject(json);
@@ -47,7 +39,4 @@ public class RetrieveRecipeTask extends AsyncTask<String, Void, JSONObject> {
         }
     }
 
-    protected void onPostExecute(JSONObject object) {
-        
-    }
 }

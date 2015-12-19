@@ -1,13 +1,11 @@
 package pl.nstrefa.arkus.recipemaster;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -101,6 +99,8 @@ public class MainActivity extends AppCompatActivity {
 //                userName = Profile.getCurrentProfile().getName();
 //                userPicture = Profile.getCurrentProfile().getProfilePictureUri(50, 50);
                 if(userName != null) { showLoggedAs(); }
+                FloatingActionButton fb = (FloatingActionButton) findViewById(R.id.facebook);
+                fb.setTitle("Wyloguj z Facebooka");
                 //Snackbar.make(findViewById(R.id.activity_main), "Zalogowano jako " + userName,Snackbar.LENGTH_LONG).setAction("Action",null).show();
                 //Toast.makeText(getApplicationContext(), "Zalogowano jako " + userName, Toast.LENGTH_LONG).show();
             }
@@ -143,6 +143,9 @@ public class MainActivity extends AppCompatActivity {
         window = getWindow();
         final FloatingActionsMenu actionButton = (FloatingActionsMenu) findViewById(R.id.actionMenu);
         FloatingActionButton fb = (FloatingActionButton) findViewById(R.id.facebook);
+        if(userName != null) {
+            fb.setTitle("Wyloguj z Facebooka");
+        }
         FloatingActionButton recipe = (FloatingActionButton) findViewById(R.id.getRecipe);
 
         actionButton.setOnFloatingActionsMenuUpdateListener(new FloatingActionsMenu.OnFloatingActionsMenuUpdateListener() {
@@ -199,14 +202,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showLoggedAs() {
-        View v = findViewById(R.id.activity_main);
-        Snackbar.make(v, "Jesteś zalogowany jako " + userName,Snackbar.LENGTH_LONG).setAction("Wyloguj", new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                facebookLogOut();
-                Snackbar.make(v, "Wylogowano...", Snackbar.LENGTH_LONG).show();
-            }
-        }).show();
+        String message = "Jesteś zalogowany jako " + userName;
+        Toast.makeText(getApplicationContext(),message, Toast.LENGTH_SHORT).show();
     }
 
     private void facebookLogOut() {
@@ -228,6 +225,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 facebookLogOut();
+                FloatingActionButton fb = (FloatingActionButton) findViewById(R.id.facebook);
+                fb.setTitle("Zaloguj przez Facebooka");
+                Toast.makeText(getApplicationContext(), "Wylogowano", Toast.LENGTH_SHORT).show();
                 popupWindow.dismiss();
             }
         });
@@ -258,7 +258,6 @@ public class MainActivity extends AppCompatActivity {
         LoginManager lm = LoginManager.getInstance();
         lm.setLoginBehavior(LoginBehavior.NATIVE_WITH_FALLBACK);
         LoginManager.getInstance().logInWithReadPermissions(this, null);
-        //Toast.makeText(getApplicationContext(), "facebookLogin()", Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -298,7 +297,9 @@ public class MainActivity extends AppCompatActivity {
             userPicture = Uri.parse(savedInstanceState.getString("userpicture"));
             alreadyRunning = savedInstanceState.getInt("alreadyrunning");
         } else {
-            // Probably initialize members with default values for a new instance
+            userName = null;
+            userPicture = null;
+            alreadyRunning = -1;
         }
 
     }
@@ -330,8 +331,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        accessTokenTracker.stopTracking();
-//        profileTracker.stopTracking();
+        accessTokenTracker.stopTracking();
+        if(profileTracker != null) {
+            profileTracker.stopTracking();
+        }
     }
 
     private void setStatusBarColor(int colorResID) {

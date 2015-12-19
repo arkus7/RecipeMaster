@@ -1,7 +1,6 @@
 package pl.nstrefa.arkus.recipemaster;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v4.app.NavUtils;
 import android.support.v4.widget.Space;
@@ -11,20 +10,13 @@ import android.view.View;
 import android.view.ViewStub;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.facebook.CallbackManager;
-import com.facebook.FacebookActivity;
-import com.facebook.FacebookSdk;
-import com.facebook.login.LoginManager;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
-import java.util.concurrent.ExecutionException;
 
 public class PizzaRecipe extends AppCompatActivity {
 
@@ -48,7 +40,6 @@ public class PizzaRecipe extends AppCompatActivity {
         if(userName != null) {
             ViewStub stub = (ViewStub) findViewById(R.id.layout_stub);
             stub.setLayoutResource(R.layout.fb_bar);
-            View inflated = stub.inflate();
             TextView user = (TextView) findViewById(R.id.userName);
             String logged = "Logged as " + userName;
             user.setText(logged);
@@ -63,11 +54,6 @@ public class PizzaRecipe extends AppCompatActivity {
         setResult(RESULT_FIRST_USER, i);
         //Toast.makeText(getApplicationContext(), userName, Toast.LENGTH_LONG).show();
 
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     protected void fillActivity(JSONObject recipe) throws JSONException {
