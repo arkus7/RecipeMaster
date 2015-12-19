@@ -40,6 +40,7 @@ public class PizzaRecipe extends AppCompatActivity {
         if(userName != null) {
             ViewStub stub = (ViewStub) findViewById(R.id.layout_stub);
             stub.setLayoutResource(R.layout.fb_bar);
+            stub.inflate();
             TextView user = (TextView) findViewById(R.id.userName);
             String logged = "Logged as " + userName;
             user.setText(logged);
