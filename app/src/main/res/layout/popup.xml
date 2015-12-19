@@ -10,13 +10,14 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:background="@color/facebook_bar"
-        android:alpha="0.8"/>
+        android:alpha="0.8"
+        android:contentDescription="@string/logout_popup_message"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Wylogować z Facebook?"
+        android:text="@string/logout_popup_message"
         android:id="@+id/logOutPopupMessage"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
@@ -25,7 +26,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tak"
+        android:text="@string/logout_popup_yes"
         android:id="@+id/logOutYesButton"
         android:layout_below="@+id/logOutPopupMessage"
         android:layout_alignLeft="@+id/logOutPopupMessage"
@@ -34,7 +35,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Nie"
+        android:text="@string/logout_popup_no"
         android:id="@+id/logOutCancelButton"
         android:layout_below="@+id/logOutPopupMessage"
         android:layout_alignRight="@+id/logOutPopupMessage"

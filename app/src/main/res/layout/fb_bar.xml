@@ -26,7 +26,7 @@
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/userName"
             android:layout_toEndOf="@+id/userName"
-            android:layout_marginLeft="5dp"/>
+            android:layout_marginLeft="5dp" />
     </RelativeLayout>
 
 </RelativeLayout>

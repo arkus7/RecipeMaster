@@ -6,7 +6,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:paddingBottom="@dimen/activity_vertical_margin"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Recipe name"
+            android:text="@string/recipe_name"
             android:id="@+id/recipeName"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
@@ -29,7 +29,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Description text"
+            android:text="@string/recipe_description"
             android:id="@+id/description"
             android:layout_below="@+id/recipeName"
             android:layout_alignParentLeft="true"
@@ -42,7 +42,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Ingredients"
+            android:text="@string/recipe_ingredients"
             android:id="@+id/ingredients"
             android:layout_below="@+id/description"
             android:layout_alignParentLeft="true"
@@ -51,7 +51,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ingredients list"
+            android:text="@string/recipe_ingredients_list"
             android:id="@+id/ingredientsList"
             android:layout_below="@+id/ingredients"
             android:layout_alignParentLeft="true"
@@ -62,7 +62,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Preparing"
+            android:text="@string/recipe_preparing"
             android:id="@+id/preparing"
             android:layout_below="@+id/ingredientsList"
             android:layout_alignParentLeft="true"
@@ -71,7 +71,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Preparing list"
+            android:text="@string/recipe_preparing_list"
             android:id="@+id/preparingList"
             android:layout_below="@+id/preparing"
             android:layout_alignParentLeft="true"
@@ -82,7 +82,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Images"
+            android:text="@string/recipe_images"
             android:id="@+id/images"
             android:layout_below="@+id/preparingList"
             android:layout_alignParentLeft="true"
@@ -95,7 +95,8 @@
             android:layout_below="@+id/images"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_margin="@dimen/image_margin"/>
+            android:layout_margin="@dimen/image_margin"
+            android:contentDescription="@string/recipe_name"/>
 
         <ImageView
             android:layout_width="wrap_content"
@@ -104,7 +105,8 @@
             android:layout_below="@+id/images"
             android:layout_toRightOf="@+id/pizzaImage1"
             android:layout_toEndOf="@+id/pizzaImage1"
-            android:layout_margin="@dimen/image_margin"/>
+            android:layout_margin="@dimen/image_margin"
+            android:contentDescription="@string/recipe_name"/>
 
         <ImageView
             android:layout_width="wrap_content"
@@ -112,7 +114,8 @@
             android:id="@+id/pizzaImage3"
             android:layout_alignTop="@+id/pizzaImage2"
             android:layout_toRightOf="@+id/pizzaImage2"
-            android:layout_toEndOf="@+id/pizzaImage2" />
+            android:layout_toEndOf="@+id/pizzaImage2"
+            android:contentDescription="@string/recipe_name"/>
         
         <android.support.v4.widget.Space
             android:id="@+id/space"

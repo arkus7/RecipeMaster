@@ -2,4 +2,14 @@
     <string name="app_name">RecipeMaster</string>
     <string name="action_settings">Settings</string>
     <string name="facebook_app_id">712377992233038</string>
+    <string name="logout_popup_message">Wylogować z Facebooka?</string>
+    <string name="logout_popup_yes">Tak</string>
+    <string name="logout_popup_no">Nie</string>
+    <string name="recipe_name">Recipe name</string>
+    <string name="recipe_description">Description</string>
+    <string name="recipe_ingredients">Ingredients</string>
+    <string name="recipe_ingredients_list">Ingredients list</string>
+    <string name="recipe_preparing">Preparing</string>
+    <string name="recipe_preparing_list">Preparing list</string>
+    <string name="recipe_images">Images</string>
 </resources>
