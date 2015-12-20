@@ -49,7 +49,8 @@ public class PizzaRecipe extends AppCompatActivity {
             space.setVisibility(View.GONE);
         }
         if(userPicture != null) {
-            Picasso.with(getApplicationContext()).load(userPicture).into((ImageView) findViewById(R.id.userPicture));
+            Picasso.with(getApplicationContext()).load(userPicture).
+                    into((ImageView) findViewById(R.id.userPicture));
         }
         setResult(RESULT_FIRST_USER, i);
     }

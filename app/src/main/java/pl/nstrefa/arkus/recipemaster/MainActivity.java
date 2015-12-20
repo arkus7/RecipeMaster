@@ -44,6 +44,7 @@ import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
 
+    static final int RETURN_FROM_PIZZA_RECIPE = 0;
     private String userName;
     private Uri userPicture;
     private CallbackManager callbackManager;
@@ -52,8 +53,6 @@ public class MainActivity extends AppCompatActivity {
     private AccessToken accessToken;
     private boolean alreadyRunning = false;
     private Window window;
-
-    static final int RETURN_FROM_PIZZA_RECIPE = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,13 +63,15 @@ public class MainActivity extends AppCompatActivity {
 
         accessTokenTracker = new AccessTokenTracker() {
             @Override
-            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
+            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken,
+                                                       AccessToken currentAccessToken) {
                 accessToken = currentAccessToken;
             }
         };
         accessToken = AccessToken.getCurrentAccessToken();
 
-        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+        LoginManager.getInstance().registerCallback(callbackManager,
+                new FacebookCallback<LoginResult>() {
 
 
             @Override
@@ -128,7 +129,10 @@ public class MainActivity extends AppCompatActivity {
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
-        if((!alreadyRunning && accessToken != null) || (userName != null && !alreadyRunning)) { showLoggedAs(); alreadyRunning = true;}
+        if((!alreadyRunning && accessToken != null) || (userName != null && !alreadyRunning)) {
+            showLoggedAs();
+            alreadyRunning = true;
+        }
 
         //fb logged as
         window = getWindow();
@@ -139,7 +143,8 @@ public class MainActivity extends AppCompatActivity {
         }
         FloatingActionButton recipe = (FloatingActionButton) findViewById(R.id.getRecipe);
 
-        actionButton.setOnFloatingActionsMenuUpdateListener(new FloatingActionsMenu.OnFloatingActionsMenuUpdateListener() {
+        actionButton.setOnFloatingActionsMenuUpdateListener(
+                new FloatingActionsMenu.OnFloatingActionsMenuUpdateListener() {
             FrameLayout fl = (FrameLayout) findViewById(R.id.activity_main_content);
             @Override
             public void onMenuExpanded() {
@@ -205,7 +210,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void logOutPopup() {
-        LayoutInflater inflater = (LayoutInflater) MainActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) MainActivity.this.
+                getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View layout = inflater.inflate(R.layout.popup, (ViewGroup) findViewById(R.id.popup));
         final PopupWindow popupWindow = new PopupWindow(layout,1100,400,true);
         popupWindow.setAnimationStyle(-1);
@@ -300,7 +306,8 @@ public class MainActivity extends AppCompatActivity {
         i.putExtra("userpicture", userPicture);
         i.putExtra("alreadyrunning", alreadyRunning);
         try {
-            JSONObject recipeJSON = new RetrieveRecipeTask().execute(getResources().getString(R.string.recipe_url)).get();
+            JSONObject recipeJSON = new RetrieveRecipeTask().
+                    execute(getResources().getString(R.string.recipe_url)).get();
             if(recipeJSON.getString("title") == null) {
                 throw new JSONException("No JSONObject downloaded");
             }
@@ -308,12 +315,18 @@ public class MainActivity extends AppCompatActivity {
             i.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION|Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             startActivityForResult(i, RETURN_FROM_PIZZA_RECIPE);
         } catch (InterruptedException ie) {
-            Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_interrupted), Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),
+                    getResources().getString(R.string.error_interrupted),
+                    Toast.LENGTH_LONG).show();
         } catch (ExecutionException ee) {
-            Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_failed_to_execute), Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),
+                    getResources().getString(R.string.error_failed_to_execute),
+                    Toast.LENGTH_LONG).show();
         }
         catch (JSONException jsone) {
-            Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_no_connection), Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),
+                    getResources().getString(R.string.error_no_connection),
+                    Toast.LENGTH_LONG).show();
         }
     }
 
