@@ -91,8 +91,7 @@ public class MainActivity extends AppCompatActivity {
                     userName = Profile.getCurrentProfile().getName();
                     userPicture = Profile.getCurrentProfile().getProfilePictureUri(100, 100);
                 }
-//                userName = Profile.getCurrentProfile().getName();
-//                userPicture = Profile.getCurrentProfile().getProfilePictureUri(50, 50);
+
                 if(userName != null) { showLoggedAs(); }
                 FloatingActionButton fb = (FloatingActionButton) findViewById(R.id.facebook);
                 fb.setTitle(getResources().getString(R.string.facebook_logout));
@@ -129,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
-        if(!alreadyRunning && accessToken != null) { showLoggedAs(); alreadyRunning = true;}
+        if((!alreadyRunning && accessToken != null) || (userName != null && !alreadyRunning)) { showLoggedAs(); alreadyRunning = true;}
 
         //fb logged as
         window = getWindow();
