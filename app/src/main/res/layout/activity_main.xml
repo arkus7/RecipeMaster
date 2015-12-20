@@ -50,7 +50,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 fab:fab_colorNormal="@color/recipe"
-                fab:fab_title="Get the recipe"
+                fab:fab_title="@string/get_recipe"
                 fab:fab_colorPressed="@color/recipe"
                 fab:fab_icon="@drawable/pizza"
                 fab:fab_size="mini"/>
@@ -60,7 +60,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 fab:fab_colorNormal="@color/facebook"
-                fab:fab_title="Zaloguj przez Facebooka"
+                fab:fab_title="@string/facebook_login"
                 fab:fab_colorPressed="@color/facebook"
                 fab:fab_icon="@drawable/facebook"
                 fab:fab_size="mini"/>

@@ -1,10 +1,10 @@
 <resources>
     <string name="app_name">RecipeMaster</string>
     <string name="action_settings">Settings</string>
-    <string name="facebook_app_id">712377992233038</string>
-    <string name="logout_popup_message">Wylogować z Facebooka?</string>
-    <string name="logout_popup_yes">Tak</string>
-    <string name="logout_popup_no">Nie</string>
+    <string name="facebook_app_id" translatable="false">712377992233038</string>
+    <string name="logout_popup_no">No</string>
+    <string name="get_recipe" translatable="false">Get the recipe!</string>
+    <string name="recipe_url" translatable="false">http://mooduplabs.com/test/info.php</string>
     <string name="recipe_name">Recipe name</string>
     <string name="recipe_description">Description</string>
     <string name="recipe_ingredients">Ingredients</string>
@@ -12,4 +12,16 @@
     <string name="recipe_preparing">Preparing</string>
     <string name="recipe_preparing_list">Preparing list</string>
     <string name="recipe_images">Images</string>
+    <string name="logout_popup_yes">Yes</string>
+    <string name="logout_popup_message">Log out from Facebook?</string>
+    <string name="facebook_logout">Log out from Facebook</string>
+    <string name="facebook_login">Log in with Facebook</string>
+    <string name="login_aborted">Aborted</string>
+    <string name="login_error">Login error</string>
+    <string name="logged_in_as">Logged in as</string>
+    <string name="logged_as">Logged as</string>
+    <string name="logged_out">Logged out</string>
+    <string name="error_interrupted">Interrupted</string>
+    <string name="error_no_connection">Can\'t download recipe. Is your connection active?</string>
+    <string name="error_failed_to_execute">Failed to execute</string>
 </resources>

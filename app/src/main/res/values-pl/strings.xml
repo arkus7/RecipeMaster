@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">RecipeMaster</string>
+    <string name="action_settings">Ustawienia</string>
+    <string name="logout_popup_message">Wylogować z Facebooka?</string>
+    <string name="logout_popup_no">Nie</string>
+    <string name="logout_popup_yes">Tak</string>
+    <string name="recipe_description">Opis</string>
+    <string name="recipe_images">Zdjęcia</string>
+    <string name="recipe_ingredients">Składniki</string>
+    <string name="recipe_name">Nazwa przepisu</string>
+    <string name="recipe_preparing_list">Lista przygotowania</string>
+    <string name="recipe_preparing">Przygotowanie</string>
+    <string name="recipe_ingredients_list">Lista składników</string>
+    <string name="facebook_login">Zaloguj przez Facebooka</string>
+    <string name="facebook_logout">Wyloguj z Facebooka</string>
+    <string name="logged_as">Zalogowany jako</string>
+    <string name="logged_out">Wylogowano</string>
+    <string name="login_aborted">Anulowano</string>
+    <string name="login_error">Błąd logowania</string>
+    <string name="logged_in_as">Jesteś zalogowany jako</string>
+    <string name="error_failed_to_execute">Błąd wykoniania</string>
+    <string name="error_interrupted">Przerwano</string>
+    <string name="error_no_connection">Nie można pobrać przepisu. Czy masz połączenie z Internetem?</string>
+</resources>

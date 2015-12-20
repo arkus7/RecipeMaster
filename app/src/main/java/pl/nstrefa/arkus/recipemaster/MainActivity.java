@@ -44,15 +44,16 @@ import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
 
-    protected String userName;
-    protected Uri userPicture;
-    protected CallbackManager callbackManager;
+    private String userName;
+    private Uri userPicture;
+    private CallbackManager callbackManager;
     private ProfileTracker profileTracker;
     private AccessTokenTracker accessTokenTracker;
     private AccessToken accessToken;
-    static final int RETURN_FROM_PIZZA_RECIPE = 0;
-    private int alreadyRunning = -1;
+    private boolean alreadyRunning = false;
     private Window window;
+
+    static final int RETURN_FROM_PIZZA_RECIPE = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,9 +65,6 @@ public class MainActivity extends AppCompatActivity {
         accessTokenTracker = new AccessTokenTracker() {
             @Override
             protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
-                if(currentAccessToken != null) {
-                    Log.v("facebook - token", currentAccessToken.toString());
-                }
                 accessToken = currentAccessToken;
             }
         };
@@ -77,12 +75,10 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onSuccess(LoginResult loginResult) {
-                Log.v("facebook - token", AccessToken.getCurrentAccessToken().getToken());
                 if (Profile.getCurrentProfile() == null) {
                     profileTracker = new ProfileTracker() {
                         @Override
                         protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
-                            Log.v("facebook - profile", currentProfile.getFirstName());
                             userName = currentProfile.getName();
                             userPicture = currentProfile.getProfilePictureUri(100, 100);
                             showLoggedAs();
@@ -94,34 +90,30 @@ public class MainActivity extends AppCompatActivity {
                     Profile profile = Profile.getCurrentProfile();
                     userName = Profile.getCurrentProfile().getName();
                     userPicture = Profile.getCurrentProfile().getProfilePictureUri(100, 100);
-                    Log.v("facebook - profile", profile.getFirstName());
                 }
 //                userName = Profile.getCurrentProfile().getName();
 //                userPicture = Profile.getCurrentProfile().getProfilePictureUri(50, 50);
                 if(userName != null) { showLoggedAs(); }
                 FloatingActionButton fb = (FloatingActionButton) findViewById(R.id.facebook);
-                fb.setTitle("Wyloguj z Facebooka");
-                //Snackbar.make(findViewById(R.id.activity_main), "Zalogowano jako " + userName,Snackbar.LENGTH_LONG).setAction("Action",null).show();
-                //Toast.makeText(getApplicationContext(), "Zalogowano jako " + userName, Toast.LENGTH_LONG).show();
+                fb.setTitle(getResources().getString(R.string.facebook_logout));
             }
 
             @Override
             public void onCancel() {
                 Log.v("facebook - onCancel", "cancelled");
-                Toast.makeText(getApplicationContext(), "Anulowano", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), getResources().getText(R.string.login_aborted), Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onError(FacebookException error) {
                 Log.v("facebook - onError", error.getMessage());
-                Toast.makeText(getApplicationContext(), "Błąd logowania", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), getResources().getText(R.string.login_error), Toast.LENGTH_LONG).show();
             }
         });
 
         //fb
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        // Logs 'install' and 'app activate' App Events.
         setSupportActionBar(toolbar);
 
         //fb logged as
@@ -133,18 +125,18 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             Intent i = getIntent();
-            alreadyRunning =  i.getIntExtra("alreadyrunning", -1);
+            alreadyRunning =  i.getBooleanExtra("alreadyrunning", false);
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
-        if(alreadyRunning == -1 && accessToken != null) { showLoggedAs(); alreadyRunning = 0;}
+        if(!alreadyRunning && accessToken != null) { showLoggedAs(); alreadyRunning = true;}
 
         //fb logged as
         window = getWindow();
         final FloatingActionsMenu actionButton = (FloatingActionsMenu) findViewById(R.id.actionMenu);
         FloatingActionButton fb = (FloatingActionButton) findViewById(R.id.facebook);
         if(userName != null) {
-            fb.setTitle("Wyloguj z Facebooka");
+            fb.setTitle(getResources().getString(R.string.facebook_logout));
         }
         FloatingActionButton recipe = (FloatingActionButton) findViewById(R.id.getRecipe);
 
@@ -202,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showLoggedAs() {
-        String message = "Jesteś zalogowany jako " + userName;
+        String message = getResources().getString(R.string.logged_in_as) + " " + userName;
         Toast.makeText(getApplicationContext(),message, Toast.LENGTH_SHORT).show();
     }
 
@@ -226,8 +218,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 facebookLogOut();
                 FloatingActionButton fb = (FloatingActionButton) findViewById(R.id.facebook);
-                fb.setTitle("Zaloguj przez Facebooka");
-                Toast.makeText(getApplicationContext(), "Wylogowano", Toast.LENGTH_SHORT).show();
+                fb.setTitle(getResources().getString(R.string.facebook_login));
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.logged_out), Toast.LENGTH_SHORT).show();
                 popupWindow.dismiss();
             }
         });
@@ -249,7 +241,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-
         // Logs 'app deactivate' App Event.
         AppEventsLogger.deactivateApp(this);
     }
@@ -272,7 +263,7 @@ public class MainActivity extends AppCompatActivity {
                 menu.collapseImmediately();
                 userName = data.getStringExtra("username");
                 userPicture = (Uri) data.getExtras().get("userpicture");
-                alreadyRunning = data.getIntExtra("alreadyrunning", 0);
+                alreadyRunning = data.getBooleanExtra("alreadyrunning", true);
             }
         }
 
@@ -284,7 +275,7 @@ public class MainActivity extends AppCompatActivity {
         if(userName != null && userPicture != null) {
             savedInstanceState.putString("username", userName);
             savedInstanceState.putString("userpicture", userPicture.toString());
-            savedInstanceState.putInt("alreadyrunning", alreadyRunning);
+            savedInstanceState.putBoolean("alreadyrunning", alreadyRunning);
         }
     }
 
@@ -295,11 +286,11 @@ public class MainActivity extends AppCompatActivity {
             // Restore value of members from saved state
             userName = savedInstanceState.getString("username");
             userPicture = Uri.parse(savedInstanceState.getString("userpicture"));
-            alreadyRunning = savedInstanceState.getInt("alreadyrunning");
+            alreadyRunning = savedInstanceState.getBoolean("alreadyrunning");
         } else {
             userName = null;
             userPicture = null;
-            alreadyRunning = -1;
+            alreadyRunning = false;
         }
 
     }
@@ -310,7 +301,7 @@ public class MainActivity extends AppCompatActivity {
         i.putExtra("userpicture", userPicture);
         i.putExtra("alreadyrunning", alreadyRunning);
         try {
-            JSONObject recipeJSON = new RetrieveRecipeTask().execute("http://mooduplabs.com/test/info.php").get();
+            JSONObject recipeJSON = new RetrieveRecipeTask().execute(getResources().getString(R.string.recipe_url)).get();
             if(recipeJSON.getString("title") == null) {
                 throw new JSONException("No JSONObject downloaded");
             }
@@ -318,13 +309,12 @@ public class MainActivity extends AppCompatActivity {
             i.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION|Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             startActivityForResult(i, RETURN_FROM_PIZZA_RECIPE);
         } catch (InterruptedException ie) {
-            Toast.makeText(getApplicationContext(),"Interrupted", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_interrupted), Toast.LENGTH_LONG).show();
         } catch (ExecutionException ee) {
-            Toast.makeText(getApplicationContext(),"Failed to execute", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_failed_to_execute), Toast.LENGTH_LONG).show();
         }
         catch (JSONException jsone) {
-            Toast.makeText(getApplicationContext(),"Can't download recipe. Is your connection active?", Toast.LENGTH_LONG).show();
-            //TODO: if error, don't open this activity.
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_no_connection), Toast.LENGTH_LONG).show();
         }
     }
 

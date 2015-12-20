@@ -42,19 +42,16 @@ public class PizzaRecipe extends AppCompatActivity {
             stub.setLayoutResource(R.layout.fb_bar);
             stub.inflate();
             TextView user = (TextView) findViewById(R.id.userName);
-            String logged = "Logged as " + userName;
+            String logged = getResources().getString(R.string.logged_as) + " " + userName;
             user.setText(logged);
         } else {
             Space space = (Space) findViewById(R.id.space);
             space.setVisibility(View.GONE);
-            //TODO: remove space
         }
         if(userPicture != null) {
             Picasso.with(getApplicationContext()).load(userPicture).into((ImageView) findViewById(R.id.userPicture));
         }
         setResult(RESULT_FIRST_USER, i);
-        //Toast.makeText(getApplicationContext(), userName, Toast.LENGTH_LONG).show();
-
     }
 
     protected void fillActivity(JSONObject recipe) throws JSONException {
