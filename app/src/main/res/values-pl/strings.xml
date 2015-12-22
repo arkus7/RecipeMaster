@@ -22,4 +22,10 @@
     <string name="error_failed_to_execute">Błąd wykoniania</string>
     <string name="error_interrupted">Przerwano</string>
     <string name="error_no_connection">Nie można pobrać przepisu. Czy masz połączenie z Internetem?</string>
+    <string name="image_save_alert_message">Czy chcesz zapisać zdjęcie?</string>
+    <string name="image_save_alert_negative">Nie</string>
+    <string name="image_save_alert_positive">Tak</string>
+    <string name="image_save_alert_saved">Zapisano zdjęcie pomyślnie</string>
+    <string name="image_save_alert_title">Zapisywanie zdjęcia</string>
+    <string name="image_save_error_file_exist">Plik już istnieje</string>
 </resources>
