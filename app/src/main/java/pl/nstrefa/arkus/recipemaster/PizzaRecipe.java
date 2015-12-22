@@ -195,7 +195,7 @@ public class PizzaRecipe extends AppCompatActivity {
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle(getResources().getString(R.string.image_save_alert_title))
                 .setMessage(getResources().getString(R.string.image_save_alert_message))
-                .setIcon(android.R.drawable.ic_menu_save)
+                .setIcon(R.drawable.content_save)
                 .setPositiveButton(getResources().getString(R.string.image_save_alert_positive),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {

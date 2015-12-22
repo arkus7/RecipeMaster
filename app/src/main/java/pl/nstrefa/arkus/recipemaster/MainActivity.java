@@ -1,12 +1,14 @@
 package pl.nstrefa.arkus.recipemaster;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -89,8 +91,8 @@ public class MainActivity extends AppCompatActivity {
                     profileTracker.startTracking();
                 } else if(AccessToken.getCurrentAccessToken() != null) {
                     Profile profile = Profile.getCurrentProfile();
-                    userName = Profile.getCurrentProfile().getName();
-                    userPicture = Profile.getCurrentProfile().getProfilePictureUri(100, 100);
+                    userName = profile.getName();
+                    userPicture = profile.getProfilePictureUri(100, 100);
                 }
 
                 if(userName != null) { showLoggedAs(); }
@@ -210,30 +212,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void logOutPopup() {
-        LayoutInflater inflater = (LayoutInflater) MainActivity.this.
-                getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View layout = inflater.inflate(R.layout.popup, (ViewGroup) findViewById(R.id.popup));
-        final PopupWindow popupWindow = new PopupWindow(layout,1100,400,true);
-        popupWindow.setAnimationStyle(-1);
-        popupWindow.showAtLocation(layout, Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
-        Button yes = (Button) layout.findViewById(R.id.logOutYesButton);
-        Button cancel = (Button) layout.findViewById(R.id.logOutCancelButton);
-        yes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                facebookLogOut();
-                FloatingActionButton fb = (FloatingActionButton) findViewById(R.id.facebook);
-                fb.setTitle(getResources().getString(R.string.facebook_login));
-                Toast.makeText(getApplicationContext(), getResources().getString(R.string.logged_out), Toast.LENGTH_SHORT).show();
-                popupWindow.dismiss();
-            }
-        });
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popupWindow.dismiss();
-            }
-        });
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle(getResources().getString(R.string.com_facebook_loginview_log_out_action))
+                .setMessage(getResources().getString(R.string.logout_popup_message))
+                .setIcon(R.drawable.facebook_box)
+                .setPositiveButton(getResources().getString(R.string.logout_popup_yes),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                facebookLogOut();
+                                FloatingActionButton fb = (FloatingActionButton) findViewById(R.id.facebook);
+                                fb.setTitle(getResources().getString(R.string.facebook_login));
+                                Toast.makeText(getApplicationContext(), getResources().getString(R.string.logged_out), Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                .setNegativeButton(getResources().getString(R.string.logout_popup_no), null)
+                .show();
     }
 
     @Override
