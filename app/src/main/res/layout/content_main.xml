@@ -16,7 +16,7 @@
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:id="@+id/pizzaImage"
-        android:background="@drawable/pizza512trans"
+        android:background="@drawable/pizza_main_screen"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
