@@ -27,8 +27,6 @@ class RetrieveRecipeTask extends AsyncTask<String, Void, JSONObject> {
             while ((line = br.readLine()) != null) {
                 json += line;
             }
-        } catch (MalformedURLException mue) {
-            mue.printStackTrace();
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }

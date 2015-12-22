@@ -1,6 +1,5 @@
 package pl.nstrefa.arkus.recipemaster;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -12,16 +11,11 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -46,7 +40,7 @@ import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
 
-    static final int RETURN_FROM_PIZZA_RECIPE = 0;
+    private static final int RETURN_FROM_PIZZA_RECIPE = 0;
     private String userName;
     private Uri userPicture;
     private CallbackManager callbackManager;
@@ -201,7 +195,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void showLoggedAs() {
         String message = getResources().getString(R.string.logged_in_as) + " " + userName;
-        Toast.makeText(getApplicationContext(),message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     private void facebookLogOut() {
@@ -243,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
         AppEventsLogger.deactivateApp(this);
     }
 
-    protected void facebookLogin() {
+    private void facebookLogin() {
         LoginManager lm = LoginManager.getInstance();
         lm.setLoginBehavior(LoginBehavior.NATIVE_WITH_FALLBACK);
         LoginManager.getInstance().logInWithReadPermissions(this, null);
@@ -293,7 +287,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    protected void startPizzaRecipeActivity(View v) {
+    private void startPizzaRecipeActivity(View v) {
         Intent i = new Intent(v.getContext(), PizzaRecipe.class);
         i.putExtra("username", userName);
         i.putExtra("userpicture", userPicture);
@@ -320,6 +314,16 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),
                     getResources().getString(R.string.error_no_connection),
                     Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        FloatingActionsMenu actionsMenu = (FloatingActionsMenu) findViewById(R.id.actionMenu);
+        if(actionsMenu.isExpanded()) {
+            actionsMenu.collapse();
+        } else {
+            moveTaskToBack(true);
         }
     }
 

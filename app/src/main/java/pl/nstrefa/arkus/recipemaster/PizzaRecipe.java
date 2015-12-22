@@ -6,13 +6,12 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.NavUtils;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.Space;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewStub;
@@ -34,9 +33,9 @@ import java.io.IOException;
 
 public class PizzaRecipe extends AppCompatActivity {
 
-    protected JSONObject recipe;
-    protected String userName;
-    protected Uri userPicture;
+    private JSONObject recipe;
+    private String userName;
+    private Uri userPicture;
     private Exception imageDownloadException;
 
     @Override
@@ -70,7 +69,7 @@ public class PizzaRecipe extends AppCompatActivity {
         setResult(RESULT_FIRST_USER, i);
     }
 
-    protected void fillActivity(final JSONObject recipe) throws JSONException {
+    private void fillActivity(final JSONObject recipe) throws JSONException {
         if(recipe != null) {
             TextView recipeName = (TextView) findViewById(R.id.recipeName);
             TextView description = (TextView) findViewById(R.id.description);
@@ -107,13 +106,13 @@ public class PizzaRecipe extends AppCompatActivity {
                         break;
                 }
                 Picasso.with(getApplicationContext()).load(images.getString(i)).into(iv);
-                final int imageid = i;
+                final int imageID = i;
                 iv.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         try {
-                                imageSaveAlert(images.getString(imageid),
-                                        recipe.getString("title") + Integer.toString(imageid + 1) + ".jpg");
+                                imageSaveAlert(images.getString(imageID),
+                                        recipe.getString("title") + Integer.toString(imageID + 1) + ".jpg");
                         } catch(JSONException e) {
                             e.printStackTrace();
                         }
@@ -138,7 +137,7 @@ public class PizzaRecipe extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void imageDownload(Context ctx, String url, String pictureName){
+    private void imageDownload(Context ctx, String url, String pictureName){
         Picasso.with(ctx)
                 .load(url)
                 .into(getTarget(pictureName));
