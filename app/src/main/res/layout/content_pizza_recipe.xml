@@ -88,40 +88,46 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/pizzaImage1"
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_centerHorizontal="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_below="@+id/images"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_margin="@dimen/image_margin"
-            android:contentDescription="@string/recipe_name"/>
+            android:id="@+id/imagesLayout"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical|center_horizontal">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/pizzaImage2"
-            android:layout_below="@+id/images"
-            android:layout_toRightOf="@+id/pizzaImage1"
-            android:layout_toEndOf="@+id/pizzaImage1"
-            android:layout_margin="@dimen/image_margin"
-            android:contentDescription="@string/recipe_name"/>
+            <ImageView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:id="@+id/pizzaImage1"
+                android:layout_margin="@dimen/image_margin"
+                android:contentDescription="@string/recipe_name"
+                android:layout_gravity="center_vertical"/>
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/pizzaImage3"
-            android:layout_alignTop="@+id/pizzaImage2"
-            android:layout_toRightOf="@+id/pizzaImage2"
-            android:layout_toEndOf="@+id/pizzaImage2"
-            android:contentDescription="@string/recipe_name"/>
-        
+            <ImageView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:id="@+id/pizzaImage2"
+                android:layout_margin="@dimen/image_margin"
+                android:contentDescription="@string/recipe_name"
+                android:layout_gravity="center_vertical"/>
+
+            <ImageView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:id="@+id/pizzaImage3"
+                android:layout_margin="@dimen/image_margin"
+                android:contentDescription="@string/recipe_name"
+                android:layout_gravity="center_vertical"/>
+        </LinearLayout>
+
         <android.support.v4.widget.Space
             android:id="@+id/space"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:layout_below="@+id/pizzaImage1"
+            android:layout_below="@+id/imagesLayout"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
