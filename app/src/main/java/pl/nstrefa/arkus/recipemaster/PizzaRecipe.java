@@ -163,6 +163,7 @@ public class PizzaRecipe extends AppCompatActivity {
                             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, ostream);
                             ostream.flush();
                             ostream.close();
+                            galleryAddPic(file);
                         } catch (IOException e) {
                             Log.e("imageSave - IOException", e.getLocalizedMessage());
                             imageDownloadException = e;
@@ -197,20 +198,27 @@ public class PizzaRecipe extends AppCompatActivity {
                 .setIcon(android.R.drawable.ic_menu_save)
                 .setPositiveButton(getResources().getString(R.string.image_save_alert_positive),
                         new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        imageDownload(getApplicationContext(), url, fileName);
-                        if(imageDownloadException == null) {
-                            Toast.makeText(getApplicationContext(),
-                                    getResources().getString(R.string.image_save_alert_saved),
-                                    Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getApplicationContext(),
-                                    imageDownloadException.getLocalizedMessage(),
-                                    Toast.LENGTH_LONG).show();
-                        }
-                    }
-                })
+                            public void onClick(DialogInterface dialog, int which) {
+                                imageDownload(getApplicationContext(), url, fileName);
+                                if(imageDownloadException == null) {
+                                    Toast.makeText(getApplicationContext(),
+                                            getResources().getString(R.string.image_save_alert_saved),
+                                            Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(getApplicationContext(),
+                                            imageDownloadException.getLocalizedMessage(),
+                                            Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        })
                 .setNegativeButton(getResources().getString(R.string.image_save_alert_negative), null)
                 .show();
+    }
+
+    private void galleryAddPic(File file) {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        Uri contentUri = Uri.fromFile(file);
+        mediaScanIntent.setData(contentUri);
+        this.sendBroadcast(mediaScanIntent);
     }
 }
