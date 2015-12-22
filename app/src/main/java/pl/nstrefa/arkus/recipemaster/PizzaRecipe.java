@@ -1,6 +1,7 @@
 package pl.nstrefa.arkus.recipemaster;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -9,6 +10,7 @@ import android.os.Environment;
 import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.Space;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,6 +37,7 @@ public class PizzaRecipe extends AppCompatActivity {
     protected JSONObject recipe;
     protected String userName;
     protected Uri userPicture;
+    private Exception imageDownloadException;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,15 +112,13 @@ public class PizzaRecipe extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         try {
-                            //File[] aDirArray = ContextCompat.getExternalFilesDirs(getApplicationContext(), null);
-                            imageDownload(getApplicationContext(), images.getString(imageid) , recipe.getString("title") + Integer.toString(imageid + 1) + ".jpg");
-                            Toast.makeText(getApplicationContext(), "Pobrano obrazek nr " + Integer.toString(imageid + 1),Toast.LENGTH_SHORT).show();
+                                imageSaveAlert(images.getString(imageid),
+                                        recipe.getString("title") + Integer.toString(imageid + 1) + ".jpg");
                         } catch(JSONException e) {
                             e.printStackTrace();
                         }
                     }
                 });
-                //imageDownload(getApplicationContext(), Integer.toString(i) + ".jpg");
             }
         }
     }
@@ -137,19 +138,19 @@ public class PizzaRecipe extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public static void imageDownload(Context ctx, String url, String pictureName){
+    public void imageDownload(Context ctx, String url, String pictureName){
         Picasso.with(ctx)
                 .load(url)
                 .into(getTarget(pictureName));
     }
 
     //target to save
-    private static Target getTarget(final String pictureName) {
+    private Target getTarget(final String pictureName) {
         Target target = new Target(){
 
             @Override
             public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
-                new Thread(new Runnable() {
+                Thread t = new Thread(new Runnable() {
 
                     @Override
                     public void run() {
@@ -163,10 +164,17 @@ public class PizzaRecipe extends AppCompatActivity {
                             ostream.flush();
                             ostream.close();
                         } catch (IOException e) {
-                            Log.e("IOException", e.getLocalizedMessage());
+                            Log.e("imageSave - IOException", e.getLocalizedMessage());
+                            imageDownloadException = e;
                         }
                     }
-                }).start();
+                });
+                t.start();
+                try {
+                    t.join();
+                } catch(InterruptedException e) {
+                    e.printStackTrace();
+                }
 
             }
 
@@ -182,5 +190,27 @@ public class PizzaRecipe extends AppCompatActivity {
         };
         return target;
     }
-
+    private void imageSaveAlert(final String url, final String fileName) {
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle(getResources().getString(R.string.image_save_alert_title))
+                .setMessage(getResources().getString(R.string.image_save_alert_message))
+                .setIcon(android.R.drawable.ic_menu_save)
+                .setPositiveButton(getResources().getString(R.string.image_save_alert_positive),
+                        new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        imageDownload(getApplicationContext(), url, fileName);
+                        if(imageDownloadException == null) {
+                            Toast.makeText(getApplicationContext(),
+                                    getResources().getString(R.string.image_save_alert_saved),
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(),
+                                    imageDownloadException.getLocalizedMessage(),
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    }
+                })
+                .setNegativeButton(getResources().getString(R.string.image_save_alert_negative), null)
+                .show();
+    }
 }
