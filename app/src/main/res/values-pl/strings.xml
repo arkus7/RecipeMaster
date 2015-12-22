@@ -27,5 +27,4 @@
     <string name="image_save_alert_positive">Tak</string>
     <string name="image_save_alert_saved">Zapisano zdjęcie pomyślnie</string>
     <string name="image_save_alert_title">Zapisywanie zdjęcia</string>
-    <string name="image_save_error_file_exist">Plik już istnieje</string>
 </resources>
