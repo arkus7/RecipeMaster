@@ -25,7 +25,7 @@
     <string name="error_no_connection">Can\'t download recipe. Is your connection active?</string>
     <string name="error_failed_to_execute">Failed to execute</string>
     <string name="image_save_alert_title">Saving image</string>
-    <string name="image_save_alert_message">Do you want to save image?</string>
+    <string name="image_save_alert_message">Do you want to save this image?</string>
     <string name="image_save_alert_positive">Yes</string>
     <string name="image_save_alert_negative">No</string>
     <string name="image_save_alert_saved">Image saved successfully</string>
